@@ -11,7 +11,6 @@ class LoginForm(forms.Form):
 
 
 class RegisterForm(forms.Form):
-    email = forms.EmailField(required=True)
+    email = forms.EmailField(required=True, error_messages={'invalid': '请输入正确的邮箱格式'})
     password = forms.CharField(required=True, min_length=5)
-    captcha = CaptchaField(error_messages={'invalid':'验证码错误'})
-
+    captcha = CaptchaField(error_messages={'invalid': '验证码错误'})

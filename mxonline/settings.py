@@ -134,3 +134,10 @@ USE_TZ = False
 
 STATIC_URL = '/static/'  # 逻辑显示路径
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # 物理存储路径 可伪装
+
+EMAIL_HOST = "smtp.qq.com"
+EMAIL_PORT = 25
+EMAIL_HOST_USER = "1520466620@qq.com"
+EMAIL_HOST_PASSWORD = "wuxinyu51"
+EMAIL_USE_TLS= False
+EMAIL_FROM = EMAIL_HOST_USER
