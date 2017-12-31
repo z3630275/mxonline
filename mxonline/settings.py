@@ -15,9 +15,8 @@ import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0,os.path.join(BASE_DIR,'apps'))
-sys.path.insert(0,os.path.join(BASE_DIR,'extra_apps'))
-
+sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
+sys.path.insert(0, os.path.join(BASE_DIR, 'extra_apps'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -46,9 +45,10 @@ INSTALLED_APPS = [
     'organization',
     'xadmin',
     'crispy_forms',
-    'captcha'  # 验证码：第三方库django-simple-captcha
+    'captcha',  # 验证码：第三方库django-simple-captcha
+    'pure_pagination',  #第三方分页库 django-pure-pagination
 ]
-AUTH_USER_MODEL ='users.UserProfile'
+AUTH_USER_MODEL = 'users.UserProfile'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -73,13 +73,13 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media', #必须注册media，否则org-list中MEDIA_URL无法显示，media_url自动注册到html
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'mxonline.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -88,14 +88,13 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'mxonline',
-        'HOST':'127.0.0.1',
-        'PORT':'3306',
-        'USER':'root',
-        'PASSWORD':'123456',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+        'USER': 'root',
+        'PASSWORD': '123456',
 
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -114,7 +113,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
@@ -135,9 +133,24 @@ USE_TZ = False
 STATIC_URL = '/static/'  # 逻辑显示路径
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # 物理存储路径 可伪装
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = "smtp.qq.com"
 EMAIL_PORT = 25
 EMAIL_HOST_USER = "1520466620@qq.com"
-EMAIL_HOST_PASSWORD = "wuxinyu51"
-EMAIL_USE_TLS= False
+EMAIL_HOST_PASSWORD = 'bcphtlpzjuaehghg'
+EMAIL_USE_TLS = True
 EMAIL_FROM = EMAIL_HOST_USER
+# "bcphtlpzjuaehghg"
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') #上传文件路径
+
+PAGINATION_SETTINGS = {
+    'PAGE_RANGE_DISPLAYED':10, #PAGE_RANGE_DISPLAYED是当前页面将要显示的邻近页面的数量（默认值是10）
+    'MARGIN_PAGES_DISPLAYED':2, #MARGIN_PAGES_DISPLAYED是将显示的第一页和最后一页相邻的页数（默认值是2）
+
+    'SHOW_FIRST_PAGE_WHEN_INVALID':True, #当你想只显示第一页时提供无效的页面，而不是404错误设置SHOW_FIRST_PAGE_WHEN_INVALID为True
+}
+
+
+

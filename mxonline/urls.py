@@ -13,19 +13,29 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url,include
+from django.conf.urls import url, include
 # from django.contrib import admin
 import xadmin
+from django.views.static import serve
 from django.views.generic import TemplateView
 # from users.views import user_login
-from users.views import LoginView,RegisterView
+from users.views import LoginView, RegisterView, ActiveView, ForgetPwdView, ResetView, ModifyView
+from organization.views import OrgView
+from mxonline.settings import MEDIA_ROOT
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
-    url(r'^$', TemplateView.as_view(template_name='index.html'),name='index'),
+    url(r'^$', TemplateView.as_view(template_name='index.html'), name='index'),
     # url(r'login/$', user_login, name='login'),
     url(r'login/$', LoginView.as_view(), name='login'),
     url(r'register/$', RegisterView.as_view(), name='register'),
     url(r'^captcha/', include('captcha.urls')),
-
+    url(r'^active/(?P<active_code>.*)/$', ActiveView.as_view(), name='user_active'),
+    url(r'^forget/$', ForgetPwdView.as_view(), name='forget_pwd'),
+    url(r'^reset/(?P<active_code>.*)/$', ResetView.as_view(), name='reset_pwd'),
+    url(r'^modify/$', ModifyView.as_view(), name='modify_pwd'),
+    #课程机构首页
+    url(r'^org-list/$',OrgView.as_view(), name='org-list'),
+    #配置上传文件的访问处理函数
+    url(r'^media/(?P<path>.*)$', serve,{'document_root':MEDIA_ROOT}),#固定写法，静态文件访问路径
 ]
