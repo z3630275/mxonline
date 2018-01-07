@@ -142,8 +142,8 @@ EMAIL_USE_TLS = True
 EMAIL_FROM = EMAIL_HOST_USER
 # "bcphtlpzjuaehghg"
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media') #上传文件路径
+MEDIA_URL = '/media/'  #模型类中写的路径是相对路径，upload_to
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') #上传文件路径 只能写一个，html找封面图路径
 
 PAGINATION_SETTINGS = {
     'PAGE_RANGE_DISPLAYED':10, #PAGE_RANGE_DISPLAYED是当前页面将要显示的邻近页面的数量（默认值是10）

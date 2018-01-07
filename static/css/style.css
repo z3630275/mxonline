@@ -1991,6 +1991,8 @@ textarea:focus {
 
 .active2 {
     color: #3d9328 !important;
+    font-weight:bolder;
+
 }
 
 .module1 .imgslide2 {
@@ -2622,7 +2624,7 @@ footer .footer .line {
 }
 
 .listoptions span {
-    margin: 0 12px;
+    margin: 0 7px;
     cursor: pointer;
     color: #9F9F9F;
 }
@@ -2636,6 +2638,7 @@ footer .footer .line {
     margin-left: 140px;
     height: 50px;
     overflow: hidden;
+    font-size: 14px;
 }
 
 .list {
@@ -3282,7 +3285,7 @@ footer .footer .line {
     line-height: 30px;
     text-align: right;
     margin-top: 20px;
-    font-size: 16px;
+    font-size: 20px;
     color: #838383;
 }
 
