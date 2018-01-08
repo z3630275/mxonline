@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-
+{% load static %}
+{% load extra %}
 <head>
     <meta charset="UTF-8">
     <meta name="renderer" content="webkit">
@@ -15,10 +16,11 @@
 
 </head>
 <body>
-<section class="headerwrap ">
+<section class="headerwrap">
     <header>
-        <div class=" header">
-            {% if request.user.is_authenticated %}
+       	<div  class="header header2 ">
+
+              {% if request.user.is_authenticated %}
                 <div class="top">
                     <div class="wp">
                         <div class="fl"><p>服务电话：<b>33333333</b></p></div>
@@ -30,17 +32,18 @@
 
                         <div class="personal">
                             <dl class="user fr">
-                                <dd>bobby<img class="down fr" src="/static/images/top_down.png"/></dd>
-                                <dt><img width="20" height="20" src="/static/media/image/2016/12/default_big_14.png"/>
+                                <dd>{{ request.user }}<img class="down fr" src="{% static 'images/top_down.png' %}"/></dd>
+                                <dt><img width="20" height="20" src="{{ MEDIA_URL }}{{ request.user.image }}"/>
                                 </dt>
                             </dl>
                             <div class="userdetail">
                                 <dl>
                                     <dt><img width="80" height="80"
-                                             src="/static/media/image/2016/12/default_big_14.png"/></dt>
+                                             src="{{ MEDIA_URL }}{{ request.user.image }}"/></dt>
                                     <dd>
-                                        <h2>django</h2>
-                                        <p>bobby</p>
+                                        <h2>{{ request.user.get_gender_display }}</h2>
+                                        <p>{{ request.user }}</p>
+                                        <p>{{ request.user.mobile|star_key_format }}</p>
                                     </dd>
                                 </dl>
                                 <div class="btn">
@@ -63,6 +66,7 @@
                 </div>
 
             {% endif %}
+
 
 
 

@@ -85,13 +85,18 @@ class OrgHomeView(View):
     def get(self, request, org_id):
         current_page = 'home'
         course_org = CourseOrg.objects.get(id=int(org_id))
+        has_fav = False
+        if request.user.is_authenticated():
+            if UserFavorite.objects.filter(user=request.user, fav_id=course_org.id, fav_type=2):
+                has_fav = True
         all_courses = course_org.course_set.all()[0:3]
         all_teacher = course_org.teacher_set.all()[0:3]
         return render(request, 'org-detail-homepage.html', {
             'all_course': all_courses,
             'all_teacher': all_teacher,
             'course_org': course_org,
-            'current_page': current_page
+            'current_page': current_page,
+            'has_fav': has_fav,
         })
 
 
@@ -103,11 +108,16 @@ class OrgCourseView(View):
     def get(self, request, org_id):
         current_page = 'course'
         course_org = CourseOrg.objects.get(id=int(org_id))
+        has_fav = False
+        if request.user.is_authenticated():
+            if UserFavorite.objects.filter(user=request.user, fav_id=course_org.id, fav_type=2):
+                has_fav = True
         all_courses = course_org.course_set.all()
         return render(request, 'org-detail-course.html', {
             'all_course': all_courses,
             'course_org': course_org,
-            'current_page': current_page
+            'current_page': current_page,
+            'has_fav': has_fav,
         })
 
 
@@ -119,9 +129,14 @@ class OrgDescView(View):
     def get(self, request, org_id):
         current_page = 'desc'
         course_org = CourseOrg.objects.get(id=int(org_id))
+        has_fav = False
+        if request.user.is_authenticated():
+            if UserFavorite.objects.filter(user=request.user, fav_id=course_org.id, fav_type=2):
+                has_fav = True
         return render(request, 'org-detail-desc.html', {
             'course_org': course_org,
-            'current_page': current_page
+            'current_page': current_page,
+            'has_fav': has_fav,
         })
 
 
@@ -134,10 +149,16 @@ class OrgTeacherView(View):
         current_page = 'teacher'
         course_org = CourseOrg.objects.get(id=int(org_id))
         all_teacher = course_org.teacher_set.all()
+        has_fav = False
+        if request.user.is_authenticated():
+            if UserFavorite.objects.filter(user=request.user, fav_id=course_org.id, fav_type=2):
+                has_fav = True
+
         return render(request, 'org-detail-teachers.html', {
             'course_org': course_org,
             'current_page': current_page,
             'all_teacher': all_teacher,
+            'has_fav': has_fav,
         })
 
 
@@ -148,6 +169,7 @@ class AddFavView(View):
     def post(self, request):
         fav_id = request.POST.get('fav_id', 0)
         fav_type = request.POST.get('fav_type', 0)
+
         if not request.user.is_authenticated():
             # 判断用户登录状态
             return HttpResponse('{"status":"fail","msg":"用户未登录"}', content_type='application/json')

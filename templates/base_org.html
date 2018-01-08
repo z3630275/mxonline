@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 {% load staticfiles %}
+{% load extra %}
+{###自定义过滤器，在当前应用下#}
 <head>
 	<meta charset="UTF-8">
     <meta name="renderer" content="webkit">
@@ -13,23 +15,70 @@
     {% block custom_css %}{% endblock %}
     <script src="{% static 'js/jquery.min.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/jquery-migrate-1.2.1.min.js' %}" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('.header .personal').hover(function () {
+                $('.header .userdetail').stop(true).show();
+            }, function () {
+                $('.header .userdetail').stop(true).hide();
+            });
+
+        })
+
+    </script>
     {% block custom_js %}{% endblock %}
 </head>
 <body>
 <section class="headerwrap headerwrap2">
     <header>
-		<div  class="header2 header">
+		<div  class="header header2 ">
 
+              {% if request.user.is_authenticated %}
                 <div class="top">
-				<div class="wp">
-					<div class="fl">
-                        <p>联系方式：<b>3333333333</b></p>
-                    </div>
-                    <a style="color:white" class="fr registerbtn" href="register.html">注册</a>
-                    <a style="color:white" class="fr loginbtn" href="login.html">登录</a>
-				</div>
-			</div>
+                    <div class="wp">
+                        <div class="fl"><p>服务电话：<b>33333333</b></p></div>
+                        <!--登录后跳转-->
 
+
+                        <!-- <a style="color:white" class="fr registerbtn" href="register.html">注册</a> -->
+                        <!-- <a style="color:white" class="fr loginbtn" href="login.html">登录</a>  -->
+
+                        <div class="personal">
+                            <dl class="user fr">
+                                <dd>{{ request.user }}<img class="down fr" src="{% static 'images/top_down.png' %}"/></dd>
+                                <dt><img width="20" height="20" src="{{ MEDIA_URL }}{{ request.user.image }}"/>
+                                </dt>
+                            </dl>
+                            <div class="userdetail">
+                                <dl>
+                                    <dt><img width="80" height="80"
+                                             src="{{ MEDIA_URL }}{{ request.user.image }}"/></dt>
+                                    <dd>
+                                        <h2>{{ request.user.get_gender_display }}</h2>
+                                        <p>{{ request.user }}</p>
+                                        <p>{{ request.user.mobile|star_key_format }}</p>
+                                    </dd>
+                                </dl>
+                                <div class="btn">
+                                    <a class="personcenter fl" href="usercenter-info.html">进入个人中心</a>
+                                    <a class="fr" href="/logout/">退出</a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            {% else %}
+                <div class="top">
+                    <div class="wp">
+                        <div class="fl"><p>服务电话：<b>33333333</b></p></div>
+                        <a style="color:white" class="fr registerbtn" href="{% url 'register' %}">注册</a>
+                        <a style="color:white" class="fr loginbtn" href="/login/">登录</a>
+                    </div>
+                </div>
+
+            {% endif %}
 
     <div class="middle companyheader">
         <div class="wp">
@@ -47,7 +96,7 @@
                 </p>
             </div>
             <div class="btn fr collectionbtn notlogin" data-favid="22" data-fav-type="1">
-                 收藏
+                {% if has_fav %}已收藏{% else %}收藏{% endif %}
             </div>
 
         </div>
@@ -166,9 +215,6 @@ $(function(){
     });
 })
 </script>
-
-
-<script type="text/javascript">
 
 </body>
 </html>
